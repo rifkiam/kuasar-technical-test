@@ -2,6 +2,12 @@
   --dark-base-color: #282c34;
 }
 
+@font-face {
+  font-family: NotoColorEmojiLimited;
+  unicode-range: U+1F1E6-1F1FF;
+  src: url(https://raw.githack.com/googlefonts/noto-emoji/main/fonts/NotoColorEmoji.ttf);
+}
+
 .App {
   text-align: center;
   position: relative;
@@ -27,30 +33,15 @@
   text-align: start;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.additional-info-grid {
+  padding-left: 8%;
+  text-align: start;
 }
 
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
   }
-}
-
-.App-header {
-  background-color: #193368;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
 }
 
 .header-section > h1 {
@@ -97,6 +88,12 @@
   font-weight: 400;
 }
 
+.country-flag {
+  font-family: 'NotoColorEmojiLimited', -apple-system, BlinkMacSystemFont, 
+  'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 
+  'Segoe UI Emoji', 'Segoe UI Symbol';
+}
+
 .country-grids {
   display: grid;
   
@@ -109,6 +106,7 @@
   @media (min-width: 768px) {
     grid-template-columns: repeat(4, minmax(0, 1fr));
   };
+
 }
 
 .country-grid {
@@ -119,6 +117,8 @@
 
   border: 2px solid var(--dark-base-color);
   border-radius: 8px;
+
+  overflow: clip;
 }
 
 .country-grid:hover {
@@ -161,7 +161,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: rgba(0, 0, 0, 0.5); /* semi-transparent background */
+  background-color: rgba(0, 0, 0, 0.5);
 }
 
 .modal-card {
@@ -188,13 +188,16 @@
   font-size: large;
 }
 
-/* @keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-} */
+.search {
+  display: flex;
 
-/* HTML: <div class="loader"></div> */
+  align-items: center;
+  justify-content: center;
+  @media (min-width: 512px) {
+    align-items: start;
+    justify-content: start;
+  }
+
+  gap: 12px;
+  margin-bottom: 24px;
+}

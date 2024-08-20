@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import { getCountries, getCountry } from "../lib/graphql"
 import { JsonResponseCountries, JsonResponseCountry } from "../types/country.type";
 
-export default function CountriesList() {
+export default function CountriesList({ searchString }: { searchString: string | null }) {
   const [countries, setCountries] = useState<JsonResponseCountries | null>(null);
   let [country, setCountry] = useState<JsonResponseCountry | null>(null);
   let [selectedCountryId, setSelectedCountryId] = useState<string | null>(null)
@@ -10,7 +10,21 @@ export default function CountriesList() {
   const fetchCountriesData = async () => {
     try {
       const result = await getCountries();
-      setCountries(result);
+
+      if (searchString) {
+        const filtered = result.data.countries.filter((country) => {return country.name.toLowerCase().includes(searchString.toLowerCase())})
+        setCountries(
+          {
+            data: {
+              countries: filtered
+            }
+          }
+        )
+      }
+      else {
+        setCountries(result); 
+      }
+
     } catch (error) {
       console.error("Failed to fetch countries:", error);
     }
@@ -35,7 +49,7 @@ export default function CountriesList() {
 
   useEffect(() => {
     fetchCountriesData();
-  }, [])
+  }, [searchString])
 
   useEffect(() => {
     if (selectedCountryId) {
@@ -59,7 +73,11 @@ export default function CountriesList() {
           className="country-grid"
           onClick={() => handleCountryClick(item.code)}  
         >
-          <p>{item.name}</p>
+          <p className="country-flag">{item.name}{' '}{item.emoji}</p>
+          <div className="additional-info-grid">
+            <p>{'Capital: '}{item.capital}</p>
+            <p>{'Currency: '}{item.currency}</p>
+          </div>
         </div>
       ))}
 
@@ -77,8 +95,17 @@ export default function CountriesList() {
               <p>{country.data.country.continent.name}</p>
             </div>
             <div className="additional-info">
-              <p>{'Flag: '}{country.data.country.emoji}</p>
-              <p>{'Currency(s): '}{country.data.country.currencies}</p>
+              <p className="country-flag">{'Flag: '}{country.data.country.emoji}</p>
+              <p>{'Currency(s): '}{country.data.country.currencies.map((item, idx) => (
+                <span>
+                  {idx === country!.data.country.currencies.length - 1
+                    ?
+                      item
+                    :
+                      item + ', '
+                  }
+                </span>
+              ))}</p>
               <p>{'Language(s): '}{country.data.country.languages.map((item, idx) => (
                   <span>
                     {idx === country!.data.country.languages.length - 1

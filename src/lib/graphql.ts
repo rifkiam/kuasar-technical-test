@@ -13,15 +13,11 @@ export async function getCountries(): Promise<JsonResponseCountries> {
     query: gql`
     query getCountries {
       countries {
+        name
+        emoji
         capital
         currency
         code
-        continent {
-          name
-          code
-        }
-        currencies
-        name
       }
     }`
   });
